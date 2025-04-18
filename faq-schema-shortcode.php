@@ -45,6 +45,35 @@ class FAQ_Schema_Shortcode
       add_shortcode('faqs', array($this, 'faq_container_shortcode'));
       add_shortcode('faq', array($this, 'faq_shortcode'));
     }
+
+    add_action('wp_enqueue_scripts', array($this, 'enqueue'));
+  }
+
+  
+  
+  /**
+   * Enqueue scripts and styles
+   *
+   * @return void
+   */
+  public function enqueue() {
+    global $post;
+    
+    if (isset($post->post_content) &&
+      (
+        has_shortcode($post->post_content, 'faqs_dbm') ||
+        has_shortcode($post->post_content, 'faq_dbm') ||
+        has_shortcode($post->post_content, 'faqs') ||
+        has_shortcode($post->post_content, 'faq')
+      )
+    ) {
+      $accordion = isset($this->settings['accordion']) ? $this->settings['accordion'] : '';
+
+      if ($accordion) {
+        wp_enqueue_style('faq-schema-shortcode-dogbytemarketing', plugins_url('/css/style.css', __FILE__), array(), filemtime(plugin_dir_path(dirname(__FILE__)) . dirname(plugin_basename(__FILE__))  . '/css/style.css'));
+        wp_enqueue_script('faq-schema-shortcode-dogbytemarketing', plugins_url('/js/main.js', __FILE__), array('jquery'), filemtime(plugin_dir_path(dirname(__FILE__)) . dirname(plugin_basename(__FILE__))  . '/js/main.js'), true);
+      }
+    }
   }
   
   /**
@@ -58,9 +87,29 @@ class FAQ_Schema_Shortcode
   {
     // Reset FAQ items array at the start of each call
     $this->faq_items = [];
+    
+    // Remove line breaks
+    $clean_content = str_replace(array("\r\n", "\r", "\n"), '', $content);
 
     // Process inner shortcodes and capture output
-    $output = '<div class="faq-container">' . do_shortcode(wp_kses_post($content)) . '</div>';
+    $output = '<div class="faq-container">' . do_shortcode(wp_kses_post($clean_content)) . '</div>';
+
+    $accordion                        = isset($this->settings['accordion']) ? $this->settings['accordion'] : '';
+    $accordion_text_color             = isset($this->settings['accordion_text_color']) ? $this->settings['accordion_text_color'] : '';
+    $accordion_background_color       = isset($this->settings['accordion_background_color']) ? $this->settings['accordion_background_color'] : '';
+    $accordion_background_hover_color = isset($this->settings['accordion_background_hover_color']) ? $this->settings['accordion_background_hover_color'] : '';
+    
+    if ($accordion) {
+      if ($accordion_text_color) {
+        $output .= '<style>.faq-question { color: ' . esc_html($accordion_text_color) . '; }</style>';
+      }
+      if ($accordion_background_color) {
+        $output .= '<style>.faq-question { background-color: ' . esc_html($accordion_background_color) . '; }</style>';
+      }
+      if ($accordion_background_hover_color) {
+        $output .= '<style>.faq-question:hover { background-color: ' . esc_html($accordion_background_hover_color) . '; }</style>';
+      }
+    }
 
     // If there are FAQ items, generate the JSON-LD schema
     if (!empty($this->faq_items)) {
@@ -101,11 +150,23 @@ class FAQ_Schema_Shortcode
       ];
     }
 
+    $accordion = isset($this->settings['accordion']) ? $this->settings['accordion'] : '';
+
     // Return HTML output for each FAQ item
+    if ($accordion) {
     return '<div class="faq-item">' .
-      '<p class="faq-question"><strong>Q: ' . $question . '</strong></p>' .
-      '<p class="faq-answer">A: ' . $answer . '</p>' .
+      '<p class="faq-question" aria-expanded="false">' .
+        '<span>' . esc_html($question) . '</span>' .
+        '<span class="faq-toggle-icon">+</span>' .
+      '</p>' .
+      '<p class="faq-answer" style="display: none;">' . esc_html($answer) . '</p>' .
+    '</div>';
+    } else {
+    return '<div class="faq-item">' .
+      '<p class="faq-question"><strong>Q: ' . esc_html($question) . '</strong></p>' .
+      '<p class="faq-answer">A: ' . esc_html($answer) . '</p>' .
       '</div>';
+    }
   }
 
 	/**
@@ -143,10 +204,42 @@ class FAQ_Schema_Shortcode
       'faq_schema_shortcode_dogbytemarketing',
       'faq_schema_shortcode_dogbytemarketing_section'
     );
+    
+    add_settings_field(
+      'accordion',
+      __('Accordion', 'faq-schema-shortcode'),
+      array($this, 'accordion_render'),
+      'faq_schema_shortcode_dogbytemarketing',
+      'faq_schema_shortcode_dogbytemarketing_section'
+    );
+    
+    add_settings_field(
+      'accordion_text_color',
+      __('Accordion Text Color', 'faq-schema-shortcode'),
+      array($this, 'accordion_text_color_render'),
+      'faq_schema_shortcode_dogbytemarketing',
+      'faq_schema_shortcode_dogbytemarketing_section'
+    );
+    
+    add_settings_field(
+      'accordion_background_color',
+      __('Accordion Background Color', 'faq-schema-shortcode'),
+      array($this, 'accordion_background_color_render'),
+      'faq_schema_shortcode_dogbytemarketing',
+      'faq_schema_shortcode_dogbytemarketing_section'
+    );
+    
+    add_settings_field(
+      'accordion_background_hover_color',
+      __('Accordion Background Hover Color', 'faq-schema-shortcode'),
+      array($this, 'accordion_background_hover_color_render'),
+      'faq_schema_shortcode_dogbytemarketing',
+      'faq_schema_shortcode_dogbytemarketing_section'
+    );
 	}
 
 	/**
-	 * Render Debug Field
+	 * Render Shortcode Alias Field
 	 *
 	 * @return void
 	 */
@@ -161,6 +254,66 @@ class FAQ_Schema_Shortcode
         [faq q="The question" a="The answer"]<br />
         [/faqs]
       </div>
+    </div>
+	  <?php
+	}
+
+	/**
+	 * Render Accordion Field
+	 *
+	 * @return void
+	 */
+	public function accordion_render() {
+    $accordion = isset($this->settings['accordion']) ? $this->settings['accordion'] : '';
+	  ?>
+    <div style="padding-top: 6px;">
+      <input type="checkbox" name="faq_schema_shortcode_dogbytemarketing_settings[accordion]" id="accordion" <?php checked(1, $accordion, true); ?> /> Enable
+      <p><strong>Makes the FAQ function like an accordion</strong></p>
+    </div>
+	  <?php
+	}
+
+	/**
+	 * Render Accordion Background Color Field
+	 *
+	 * @return void
+	 */
+	public function accordion_text_color_render() {
+    $accordion_text_color = isset($this->settings['accordion_text_color']) ? $this->settings['accordion_text_color'] : '';
+	  ?>
+    <div style="padding-top: 6px;">
+      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_text_color]" id="accordion_text_color" value="<?php echo $accordion_text_color; ?>" />
+      <p><strong>The text color of the accordion in hex.<br />EX: #ff0000</strong></p>
+    </div>
+	  <?php
+	}
+
+	/**
+	 * Render Accordion Background Color Field
+	 *
+	 * @return void
+	 */
+	public function accordion_background_color_render() {
+    $accordion_background_color = isset($this->settings['accordion_background_color']) ? $this->settings['accordion_background_color'] : '';
+	  ?>
+    <div style="padding-top: 6px;">
+      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_background_color]" id="accordion_background_color" value="<?php echo $accordion_background_color; ?>" />
+      <p><strong>The background color of the accordion in hex.<br />EX: #ff0000</strong></p>
+    </div>
+	  <?php
+	}
+
+	/**
+	 * Render Accordion Background Hover Color Field
+	 *
+	 * @return void
+	 */
+	public function accordion_background_hover_color_render() {
+    $accordion_background_hover_color = isset($this->settings['accordion_background_hover_color']) ? $this->settings['accordion_background_hover_color'] : '';
+	  ?>
+    <div style="padding-top: 6px;">
+      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_background_hover_color]" id="accordion_background_hover_color" value="<?php echo $accordion_background_hover_color; ?>" />
+      <p><strong>The background color of the accordion in hex.<br />EX: #ff0000</strong></p>
     </div>
 	  <?php
 	}
@@ -204,6 +357,24 @@ class FAQ_Schema_Shortcode
     } else {
       $sanitary_values['shortcode_alias'] = false;
     }
+
+		if (isset($input['accordion']) && $input['accordion']) {
+      $sanitary_values['accordion'] = $input['accordion'] === 'on' ? true : false;
+    } else {
+      $sanitary_values['accordion'] = false;
+    }
+
+		if (isset($input['accordion_text_color']) && $input['accordion_text_color']) {
+			$sanitary_values['accordion_text_color'] = sanitize_hex_color($input['accordion_text_color']);
+		}
+
+		if (isset($input['accordion_background_color']) && $input['accordion_background_color']) {
+			$sanitary_values['accordion_background_color'] = sanitize_hex_color($input['accordion_background_color']);
+		}
+
+		if (isset($input['accordion_background_hover_color']) && $input['accordion_background_hover_color']) {
+			$sanitary_values['accordion_background_hover_color'] = sanitize_hex_color($input['accordion_background_hover_color']);
+		}
 
     return $sanitary_values;
   }
