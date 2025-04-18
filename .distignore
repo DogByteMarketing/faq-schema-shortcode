@@ -1,0 +1,26 @@
+# Exclude hidden files
+.git
+.github
+.wordpress-org
+.gitignore
+.distignore
+
+# Exclude development and build files
+node_modules/
+vendor/teamtnt/tntsearch/tests/
+composer.lock
+package-lock.json
+webpack.config.js
+
+# Exclude test files
+tests/
+phpunit.xml
+
+# Exclude local environment files
+.env
+*.log
+
+# Exclude Git
+LICENSE
+TODO
+README.MD
