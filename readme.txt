@@ -70,6 +70,9 @@ Yes, but it's sanitized. Only the following tags are allowed in the answers:
 - `<a>` with `href`, `title`, and `target`
 - `<strong>`
 - `<em>`
+- `<ol>`
+- `<ul>`
+- `<li>`
 
 = How do I include a link? =
 
