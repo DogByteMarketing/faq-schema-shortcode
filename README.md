@@ -77,7 +77,7 @@ You would simply replace the " with '
 
 ### 1.0.2
 
-- Updated: FAQs to allow a, em, and strong
+- Updated: FAQs to allow a, em, strong, ol, ul, li
 
 ### 1.0.1
 

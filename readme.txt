@@ -91,7 +91,7 @@ You would simply replace the " with '
 == Changelog ==
 
 = 1.0.1 =
-* Updated: FAQs to allow a, em, and strong
+* Updated: FAQs to allow a, em, strong, ol, ul, li
 
 = 1.0.1 =
 * Added: Accordion option
