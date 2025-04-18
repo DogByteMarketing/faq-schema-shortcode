@@ -282,7 +282,7 @@ class FAQ_Schema_Shortcode
     $accordion_text_color = isset($this->settings['accordion_text_color']) ? $this->settings['accordion_text_color'] : '';
 	  ?>
     <div style="padding-top: 6px;">
-      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_text_color]" id="accordion_text_color" value="<?php echo $accordion_text_color; ?>" />
+      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_text_color]" id="accordion_text_color" value="<?php echo esc_html($accordion_text_color); ?>" />
       <p><strong>The text color of the accordion in hex.<br />EX: #ff0000</strong></p>
     </div>
 	  <?php
@@ -297,7 +297,7 @@ class FAQ_Schema_Shortcode
     $accordion_background_color = isset($this->settings['accordion_background_color']) ? $this->settings['accordion_background_color'] : '';
 	  ?>
     <div style="padding-top: 6px;">
-      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_background_color]" id="accordion_background_color" value="<?php echo $accordion_background_color; ?>" />
+      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_background_color]" id="accordion_background_color" value="<?php echo esc_html($accordion_background_color); ?>" />
       <p><strong>The background color of the accordion in hex.<br />EX: #ff0000</strong></p>
     </div>
 	  <?php
@@ -312,7 +312,7 @@ class FAQ_Schema_Shortcode
     $accordion_background_hover_color = isset($this->settings['accordion_background_hover_color']) ? $this->settings['accordion_background_hover_color'] : '';
 	  ?>
     <div style="padding-top: 6px;">
-      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_background_hover_color]" id="accordion_background_hover_color" value="<?php echo $accordion_background_hover_color; ?>" />
+      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_background_hover_color]" id="accordion_background_hover_color" value="<?php echo esc_html($accordion_background_hover_color); ?>" />
       <p><strong>The background color of the accordion in hex.<br />EX: #ff0000</strong></p>
     </div>
 	  <?php
