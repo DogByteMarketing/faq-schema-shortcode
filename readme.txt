@@ -4,7 +4,7 @@ Donate link:
 Tags: faq, structured data, schema, shortcode, seo
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -23,15 +23,14 @@ Example:
 [faq_dbm q="What color is grass?" a="Green"]
 [/faqs_dbm]
 
+Want to help? Submit a PR on [Github](https://github.com/DogByteMarketing/faq-schema-shortcode/).
 
-Features:
+
+== Features ==
 
 * Shortcode alias for when you do not have any other shortcodes using [faqs] and [faq] then you can enable this feature in the settings.
-
-
-Roadmap:
-
-* Add accordian ability
+* Accordion option to let users toggle FAQs open and closed
+* Accordion background color, background hover color, and text color options
 
 
 == Installation ==
@@ -41,6 +40,45 @@ Roadmap:
 1. Activate the plugin through the 'Plugins' screen in WordPress
 
 
+== Frequently Asked Questions ==
+
+= What is the shortcode for displaying FAQs? =
+Use `[faqs_dbm]` as the container shortcode and `[faq_dbm q="Your question?" a="Your answer."]` for each individual FAQ item. Wrap the individual items inside the container like this:
+
+[faqs_dbm]  
+[faq_dbm q="What is this plugin for?" a="It helps you display FAQs with JSON-LD schema for SEO."]  
+[/faqs_dbm]
+
+= Can I use a simpler shortcode like [faqs] and [faq]? =
+Yes, enable the "Shortcode Alias" option in the plugin settings. This will allow you to use `[faqs]` and `[faq]` instead of the default `[faqs_dbm]` and `[faq_dbm]`.
+
+= How do I enable accordion functionality? =
+Go to **Settings > FAQ Shortcode**, and check the box labeled **Accordion**. This makes the FAQ entries collapsible and expandable.
+
+= How can I change the accordion colors? =
+In the settings page, you can set:
+- Text color
+- Background color
+- Background hover color  
+Just enter valid HEX values (like `#ff0000`) for each.
+
+= Does this plugin add FAQ schema for SEO? =
+Yes! It automatically generates [JSON-LD structured data](https://developers.google.com/search/docs/appearance/structured-data/faqpage) so search engines like Google can understand and feature your FAQs.
+
+= Can I use HTML in the question or answer? =
+Yes, but it's sanitized. Only the following tags are allowed in the answers:
+- `<a>` with `href`, `title`, and `target`
+- `<strong>`
+- `<em>`
+
+= How do I include a link? =
+
+You would simply replace the " with '
+[faqs]
+[faq q="How to include a link" a="<a href='#'>Just like this</a>"]
+[/faqs]
+
+
 == Screenshots ==
 
 1. Demo
@@ -48,6 +86,9 @@ Roadmap:
 
 
 == Changelog ==
+
+= 1.0.1 =
+* Updated: FAQs to allow a, em, and strong
 
 = 1.0.1 =
 * Added: Accordion option

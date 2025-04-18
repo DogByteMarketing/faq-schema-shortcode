@@ -5,7 +5,7 @@
  * Plugin URI: https://www.dogbytemarketing.com/contact/
  * Description: Quickly add FAQ sections compatible with structured data to your site using simple shortcodes, improving your SEO.
  * Author: Dog Byte Marketing
- * Version: 1.0.1
+ * Version: 1.0.2
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author URI: https://www.dogbytemarketing.com
@@ -135,8 +135,17 @@ class FAQ_Schema_Shortcode
   public function faq_shortcode($atts)
   {
     // Extract question (q) and answer (a) from shortcode attributes
-    $question = isset($atts['q']) ? esc_html($atts['q']) : '';
-    $answer   = isset($atts['a']) ? esc_html($atts['a']) : '';
+    $question     = isset($atts['q']) ? $atts['q'] : '';
+    $answer       = isset($atts['a']) ? $atts['a'] : '';
+    $allowed_html = [
+      'a' => [
+        'href' => true,
+        'title' => true,
+        'target' => true,
+      ],
+      'strong' => [],
+      'em' => [],
+    ];
 
     if ($question && $answer) {
       // Add each Q&A pair to the FAQ items array for JSON-LD schema
@@ -156,15 +165,15 @@ class FAQ_Schema_Shortcode
     if ($accordion) {
     return '<div class="faq-item">' .
       '<p class="faq-question" aria-expanded="false">' .
-        '<span>' . esc_html($question) . '</span>' .
+        '<span>' . wp_kses($question, $allowed_html) . '</span>' .
         '<span class="faq-toggle-icon">+</span>' .
       '</p>' .
-      '<p class="faq-answer" style="display: none;">' . esc_html($answer) . '</p>' .
+      '<p class="faq-answer" style="display: none;">' . wp_kses($answer, $allowed_html) . '</p>' .
     '</div>';
     } else {
     return '<div class="faq-item">' .
-      '<p class="faq-question"><strong>Q: ' . esc_html($question) . '</strong></p>' .
-      '<p class="faq-answer">A: ' . esc_html($answer) . '</p>' .
+      '<p class="faq-question"><strong>Q: ' . wp_kses($question, $allowed_html) . '</strong></p>' .
+      '<p class="faq-answer">A: ' . wp_kses($answer, $allowed_html) . '</p>' .
       '</div>';
     }
   }
