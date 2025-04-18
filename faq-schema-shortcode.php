@@ -145,6 +145,9 @@ class FAQ_Schema_Shortcode
       ],
       'strong' => [],
       'em' => [],
+      'ul' => [],
+      'ol' => [],
+      'li' => [],
     ];
 
     if ($question && $answer) {
