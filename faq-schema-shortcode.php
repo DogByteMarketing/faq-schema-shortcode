@@ -5,7 +5,7 @@
  * Plugin URI: https://www.dogbytemarketing.com/contact/
  * Description: Quickly add FAQ sections compatible with structured data to your site using simple shortcodes, improving your SEO.
  * Author: Dog Byte Marketing
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author URI: https://www.dogbytemarketing.com
@@ -89,7 +89,7 @@ class FAQ_Schema_Shortcode
     $this->faq_items = [];
     
     // Remove line breaks
-    $clean_content = str_replace(array("\r\n", "\r", "\n"), '', $content);
+    $clean_content = str_replace(array("\r\n", "\r", "\n", "<br />"), '', $content);
 
     // Process inner shortcodes and capture output
     $output = '<div class="faq-container">' . do_shortcode(wp_kses_post($clean_content)) . '</div>';
