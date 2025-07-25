@@ -5,11 +5,13 @@
  * Plugin URI: https://www.dogbytemarketing.com/contact/
  * Description: Quickly add FAQ sections compatible with structured data to your site using simple shortcodes, improving your SEO.
  * Author: Dog Byte Marketing
- * Version: 1.0.2
+ * Version: 1.1.0
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author URI: https://www.dogbytemarketing.com
+ * Text Domain: faq-schema-shortcode
  * License: GPL3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
 
 namespace DogByteMarketing;
@@ -33,7 +35,7 @@ class FAQ_Schema_Shortcode
    */
   public function init()
   {
-    $shortcode_alias = isset($this->settings['shortcode_alias']) ? $this->settings['shortcode_alias'] : false;
+    $shortcode_alias = isset($this->settings['shortcode_alias']) ? sanitize_text_field($this->settings['shortcode_alias']) : false;
 
 		add_action('admin_menu', array($this, 'add_admin_menu'));
 		add_action('admin_init', array($this, 'settings_init'));
@@ -67,11 +69,19 @@ class FAQ_Schema_Shortcode
         has_shortcode($post->post_content, 'faq')
       )
     ) {
-      $accordion = isset($this->settings['accordion']) ? $this->settings['accordion'] : '';
+      $accordion = isset($this->settings['accordion']) ? sanitize_text_field($this->settings['accordion']) : '';
 
       if ($accordion) {
         wp_enqueue_style('faq-schema-shortcode-dogbytemarketing', plugins_url('/css/style.css', __FILE__), array(), filemtime(plugin_dir_path(dirname(__FILE__)) . dirname(plugin_basename(__FILE__))  . '/css/style.css'));
         wp_enqueue_script('faq-schema-shortcode-dogbytemarketing', plugins_url('/js/main.js', __FILE__), array('jquery'), filemtime(plugin_dir_path(dirname(__FILE__)) . dirname(plugin_basename(__FILE__))  . '/js/main.js'), true);
+      }
+
+      $additional_css = isset($this->settings['additional_css']) ? sanitize_text_field($this->settings['additional_css']) : '';
+
+      if ($additional_css) {
+        wp_register_style('faq-schema-shortcode-custom-dogbytemarketing', false, array(), '1.1.0');
+        wp_enqueue_style('faq-schema-shortcode-custom-dogbytemarketing');
+        wp_add_inline_style('faq-schema-shortcode-custom-dogbytemarketing', $additional_css);
       }
     }
   }
@@ -94,10 +104,10 @@ class FAQ_Schema_Shortcode
     // Process inner shortcodes and capture output
     $output = '<div class="faq-container">' . do_shortcode(wp_kses_post($clean_content)) . '</div>';
 
-    $accordion                        = isset($this->settings['accordion']) ? $this->settings['accordion'] : '';
-    $accordion_text_color             = isset($this->settings['accordion_text_color']) ? $this->settings['accordion_text_color'] : '';
-    $accordion_background_color       = isset($this->settings['accordion_background_color']) ? $this->settings['accordion_background_color'] : '';
-    $accordion_background_hover_color = isset($this->settings['accordion_background_hover_color']) ? $this->settings['accordion_background_hover_color'] : '';
+    $accordion                        = isset($this->settings['accordion']) ? sanitize_text_field($this->settings['accordion']) : '';
+    $accordion_text_color             = isset($this->settings['accordion_text_color']) ? sanitize_hex_color($this->settings['accordion_text_color']) : '';
+    $accordion_background_color       = isset($this->settings['accordion_background_color']) ? sanitize_hex_color($this->settings['accordion_background_color']) : '';
+    $accordion_background_hover_color = isset($this->settings['accordion_background_hover_color']) ? sanitize_hex_color($this->settings['accordion_background_hover_color']) : '';
     
     if ($accordion) {
       if ($accordion_text_color) {
@@ -162,22 +172,30 @@ class FAQ_Schema_Shortcode
       ];
     }
 
-    $accordion = isset($this->settings['accordion']) ? $this->settings['accordion'] : '';
+    $accordion      = isset($this->settings['accordion']) ? sanitize_text_field($this->settings['accordion']) : '';
+    $question_label = isset($this->settings['question_label']) ? sanitize_text_field($this->settings['question_label']) : __('Q:', 'faq-schema-shortcode');
+    $answer_label   = isset($this->settings['answer_label']) ? sanitize_text_field($this->settings['answer_label']) : __('A:', 'faq-schema-shortcode');
 
     // Return HTML output for each FAQ item
     if ($accordion) {
-    return '<div class="faq-item">' .
-      '<p class="faq-question" aria-expanded="false">' .
-        '<span>' . wp_kses($question, $allowed_html) . '</span>' .
-        '<span class="faq-toggle-icon">+</span>' .
-      '</p>' .
-      '<p class="faq-answer" style="display: none;">' . wp_kses($answer, $allowed_html) . '</p>' .
-    '</div>';
+      ?>
+      <div class="faq-item">
+        <p class="faq-question" aria-expanded="false">
+          <span><?php echo wp_kses($question, $allowed_html); ?></span>
+          <span class="faq-toggle-icon">+</span>
+        </p>
+        <p class="faq-answer" style="display: none;">
+          <?php echo wp_kses($answer, $allowed_html); ?>
+        </p>
+      </div>
+      <?php
     } else {
-    return '<div class="faq-item">' .
-      '<p class="faq-question"><strong>Q: ' . wp_kses($question, $allowed_html) . '</strong></p>' .
-      '<p class="faq-answer">A: ' . wp_kses($answer, $allowed_html) . '</p>' .
-      '</div>';
+      ?>
+      <div class="faq-item">
+        <p class="faq-question"><strong><?php echo esc_html($question_label); ?> <?php echo wp_kses($question, $allowed_html); ?></strong></p>
+        <p class="faq-answer"><?php echo esc_html($answer_label); ?> <?php echo wp_kses($answer, $allowed_html); ?></p>
+      </div>
+      <?php
     }
   }
 
@@ -187,7 +205,7 @@ class FAQ_Schema_Shortcode
 	 * @return void
 	 */
 	public function add_admin_menu() {
-		add_submenu_page('options-general.php', 'FAQ Shortcode', 'FAQ Shortcode', 'manage_options', 'faq-schema-shortcode', array($this, 'options_page'));
+		add_submenu_page('options-general.php', __('FAQ Shortcode', 'faq-schema-shortcode'), __('FAQ Shortcode', 'faq-schema-shortcode'), 'manage_options', 'faq-schema-shortcode', array($this, 'options_page'));
 	}
 
   /**
@@ -213,6 +231,22 @@ class FAQ_Schema_Shortcode
       'shortcode_alias',
       __('Shortcode Alias', 'faq-schema-shortcode'),
       array($this, 'shortcode_alias_render'),
+      'faq_schema_shortcode_dogbytemarketing',
+      'faq_schema_shortcode_dogbytemarketing_section'
+    );
+    
+    add_settings_field(
+      'question_label',
+      __('Question Label', 'faq-schema-shortcode'),
+      array($this, 'question_label_render'),
+      'faq_schema_shortcode_dogbytemarketing',
+      'faq_schema_shortcode_dogbytemarketing_section'
+    );
+    
+    add_settings_field(
+      'answer_label',
+      __('Answer Label', 'faq-schema-shortcode'),
+      array($this, 'answer_label_render'),
       'faq_schema_shortcode_dogbytemarketing',
       'faq_schema_shortcode_dogbytemarketing_section'
     );
@@ -248,6 +282,14 @@ class FAQ_Schema_Shortcode
       'faq_schema_shortcode_dogbytemarketing',
       'faq_schema_shortcode_dogbytemarketing_section'
     );
+    
+    add_settings_field(
+      'additional_css',
+      __('Additional CSS', 'faq-schema-shortcode'),
+      array($this, 'additional_css_render'),
+      'faq_schema_shortcode_dogbytemarketing',
+      'faq_schema_shortcode_dogbytemarketing_section'
+    );
 	}
 
 	/**
@@ -256,16 +298,46 @@ class FAQ_Schema_Shortcode
 	 * @return void
 	 */
 	public function shortcode_alias_render() {
-    $shortcode_alias = isset($this->settings['shortcode_alias']) ? $this->settings['shortcode_alias'] : '';
+    $shortcode_alias = isset($this->settings['shortcode_alias']) ? sanitize_text_field($this->settings['shortcode_alias']) : '';
 	  ?>
     <div style="padding-top: 6px;">
       <input type="checkbox" name="faq_schema_shortcode_dogbytemarketing_settings[shortcode_alias]" id="shortcode_alias" <?php checked(1, $shortcode_alias, true); ?> /> Enable
-      <p><strong>WordPress standards requires a prefix or suffix for shortcodes, but this can be difficult to remember. Check this box to make the shortcode available with:</strong></p>
+      <p><strong><?php esc_html_e('WordPress standards requires a prefix or suffix for shortcodes, but this can be difficult to remember. Check this box to make the shortcode available with', 'faq-schema-shortcode'); ?>:</strong></p>
       <div style="display: inline-block; padding: 10px; background-color: #ccc;">
         [faqs]<br />
-        [faq q="The question" a="The answer"]<br />
+        [faq q="<?php esc_html_e('The question', 'faq-schema-shortcode'); ?>" a="<?php esc_html_e('The answer', 'faq-schema-shortcode'); ?>"]<br />
         [/faqs]
       </div>
+    </div>
+	  <?php
+	}
+
+	/**
+	 * Render Question Label Field
+	 *
+	 * @return void
+	 */
+	public function question_label_render() {
+    $option = isset($this->settings['question_label']) ? sanitize_text_field($this->settings['question_label']) : __('Q:', 'faq-schema-shortcode');
+	  ?>
+    <div style="padding-top: 6px;">
+      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[question_label]" id="question_label" value="<?php echo esc_html($option); ?>" />
+      <p><strong><?php esc_html_e('The label for the question.', 'faq-schema-shortcode'); ?><br /><?php esc_html_e('EX', 'faq-schema-shortcode'); ?>: <?php esc_attr_e('Q:', 'faq-schema-shortcode'); ?></strong></p>
+    </div>
+	  <?php
+	}
+
+	/**
+	 * Render Answer Label Field
+	 *
+	 * @return void
+	 */
+	public function answer_label_render() {
+    $option = isset($this->settings['answer_label']) ? sanitize_text_field($this->settings['answer_label']) : __('A:', 'faq-schema-shortcode');
+	  ?>
+    <div style="padding-top: 6px;">
+      <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[answer_label]" id="answer_label" value="<?php echo esc_html($option); ?>" />
+      <p><strong><?php esc_html_e('The label for the answer.', 'faq-schema-shortcode'); ?><br /><?php esc_html_e('EX', 'faq-schema-shortcode'); ?>: <?php esc_attr_e('A:', 'faq-schema-shortcode'); ?></strong></p>
     </div>
 	  <?php
 	}
@@ -276,11 +348,11 @@ class FAQ_Schema_Shortcode
 	 * @return void
 	 */
 	public function accordion_render() {
-    $accordion = isset($this->settings['accordion']) ? $this->settings['accordion'] : '';
+    $accordion = isset($this->settings['accordion']) ? sanitize_text_field($this->settings['accordion']) : '';
 	  ?>
     <div style="padding-top: 6px;">
       <input type="checkbox" name="faq_schema_shortcode_dogbytemarketing_settings[accordion]" id="accordion" <?php checked(1, $accordion, true); ?> /> Enable
-      <p><strong>Makes the FAQ function like an accordion</strong></p>
+      <p><strong><?php esc_html_e('Makes the FAQ function like an accordion', 'faq-schema-shortcode'); ?></strong></p>
     </div>
 	  <?php
 	}
@@ -291,11 +363,11 @@ class FAQ_Schema_Shortcode
 	 * @return void
 	 */
 	public function accordion_text_color_render() {
-    $accordion_text_color = isset($this->settings['accordion_text_color']) ? $this->settings['accordion_text_color'] : '';
+    $accordion_text_color = isset($this->settings['accordion_text_color']) ? sanitize_hex_color($this->settings['accordion_text_color']) : '';
 	  ?>
     <div style="padding-top: 6px;">
       <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_text_color]" id="accordion_text_color" value="<?php echo esc_html($accordion_text_color); ?>" />
-      <p><strong>The text color of the accordion in hex.<br />EX: #ff0000</strong></p>
+      <p><strong><?php esc_html_e('The text color of the accordion in hex.', 'faq-schema-shortcode'); ?><br /><?php esc_html_e('EX', 'faq-schema-shortcode'); ?>: #ff0000</strong></p>
     </div>
 	  <?php
 	}
@@ -306,11 +378,11 @@ class FAQ_Schema_Shortcode
 	 * @return void
 	 */
 	public function accordion_background_color_render() {
-    $accordion_background_color = isset($this->settings['accordion_background_color']) ? $this->settings['accordion_background_color'] : '';
+    $accordion_background_color = isset($this->settings['accordion_background_color']) ? sanitize_hex_color($this->settings['accordion_background_color']) : '';
 	  ?>
     <div style="padding-top: 6px;">
       <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_background_color]" id="accordion_background_color" value="<?php echo esc_html($accordion_background_color); ?>" />
-      <p><strong>The background color of the accordion in hex.<br />EX: #ff0000</strong></p>
+      <p><strong><?php esc_attr_e('The background color of the accordion in hex.', 'faq-schema-shortcode'); ?><br /><?php esc_attr_e('EX', 'faq-schema-shortcode'); ?>: #ff0000</strong></p>
     </div>
 	  <?php
 	}
@@ -321,11 +393,26 @@ class FAQ_Schema_Shortcode
 	 * @return void
 	 */
 	public function accordion_background_hover_color_render() {
-    $accordion_background_hover_color = isset($this->settings['accordion_background_hover_color']) ? $this->settings['accordion_background_hover_color'] : '';
+    $accordion_background_hover_color = isset($this->settings['accordion_background_hover_color']) ? sanitize_hex_color($this->settings['accordion_background_hover_color']) : '';
 	  ?>
     <div style="padding-top: 6px;">
       <input type="text" name="faq_schema_shortcode_dogbytemarketing_settings[accordion_background_hover_color]" id="accordion_background_hover_color" value="<?php echo esc_html($accordion_background_hover_color); ?>" />
-      <p><strong>The background color of the accordion in hex.<br />EX: #ff0000</strong></p>
+      <p><strong><?php esc_attr_e('The background color of the accordion in hex.', 'faq-schema-shortcode'); ?><br /><?php esc_attr_e('EX', 'faq-schema-shortcode'); ?>: #ff0000</strong></p>
+    </div>
+	  <?php
+	}
+
+	/**
+	 * Render Additional CSS Field
+	 *
+	 * @return void
+	 */
+	public function additional_css_render() {
+    $option = isset($this->settings['additional_css']) ? sanitize_text_field($this->settings['additional_css']) : '';
+	  ?>
+    <div style="padding-top: 6px;">
+      <textarea name="faq_schema_shortcode_dogbytemarketing_settings[additional_css]" id="additional_css" rows="5" cols="50"><?php echo esc_html($option); ?></textarea>
+      <p><strong><?php esc_attr_e('Any additional CSS you want to add.', 'faq-schema-shortcode'); ?><br /><?php esc_attr_e("Note: It would be more beneficial to add the CSS to your theme's stylesheet.", 'faq-schema-shortcode'); ?></strong></p>
     </div>
 	  <?php
 	}
@@ -338,7 +425,7 @@ class FAQ_Schema_Shortcode
 	public function options_page() {
 	?>
 		<form action='options.php' method='post'>
-			<h2>FAQ Schema Shortcode Settings</h2>
+			<h2><?php esc_attr_e('FAQ Schema Shortcode Settings', 'faq-schema-shortcode'); ?></h2>
 
 			<?php
 			settings_fields('faq_schema_shortcode_dogbytemarketing');
@@ -370,6 +457,14 @@ class FAQ_Schema_Shortcode
       $sanitary_values['shortcode_alias'] = false;
     }
 
+		if (isset($input['question_label']) && $input['question_label']) {
+			$sanitary_values['question_label'] = sanitize_text_field($input['question_label']);
+		}
+
+		if (isset($input['answer_label']) && $input['answer_label']) {
+			$sanitary_values['answer_label'] = sanitize_text_field($input['answer_label']);
+		}
+
 		if (isset($input['accordion']) && $input['accordion']) {
       $sanitary_values['accordion'] = $input['accordion'] === 'on' ? true : false;
     } else {
@@ -386,6 +481,10 @@ class FAQ_Schema_Shortcode
 
 		if (isset($input['accordion_background_hover_color']) && $input['accordion_background_hover_color']) {
 			$sanitary_values['accordion_background_hover_color'] = sanitize_hex_color($input['accordion_background_hover_color']);
+		}
+
+		if (isset($input['additional_css']) && $input['additional_css']) {
+			$sanitary_values['additional_css'] = sanitize_text_field($input['additional_css']);
 		}
 
     return $sanitary_values;

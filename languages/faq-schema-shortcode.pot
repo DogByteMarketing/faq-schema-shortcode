@@ -1,0 +1,138 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: FAQ Schema Shortcode\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-25 17:18+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.7.2; wp-6.8\n"
+"X-Domain: faq-schema-shortcode"
+
+#: faq-schema-shortcode.php:177 faq-schema-shortcode.php:336
+#: faq-schema-shortcode.php:340
+msgid "A:"
+msgstr ""
+
+#: faq-schema-shortcode.php:256
+msgid "Accordion"
+msgstr ""
+
+#: faq-schema-shortcode.php:272
+msgid "Accordion Background Color"
+msgstr ""
+
+#: faq-schema-shortcode.php:280
+msgid "Accordion Background Hover Color"
+msgstr ""
+
+#: faq-schema-shortcode.php:264
+msgid "Accordion Text Color"
+msgstr ""
+
+#: faq-schema-shortcode.php:288
+msgid "Additional CSS"
+msgstr ""
+
+#: faq-schema-shortcode.php:248
+msgid "Answer Label"
+msgstr ""
+
+#: faq-schema-shortcode.php:415
+msgid "Any additional CSS you want to add."
+msgstr ""
+
+#. Author of the plugin
+msgid "Dog Byte Marketing"
+msgstr ""
+
+#: faq-schema-shortcode.php:325 faq-schema-shortcode.php:340
+#: faq-schema-shortcode.php:370 faq-schema-shortcode.php:385
+#: faq-schema-shortcode.php:400
+msgid "EX"
+msgstr ""
+
+#. Name of the plugin
+msgid "FAQ Schema Shortcode"
+msgstr ""
+
+#: faq-schema-shortcode.php:428
+msgid "FAQ Schema Shortcode Settings"
+msgstr ""
+
+#: faq-schema-shortcode.php:208
+msgid "FAQ Shortcode"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.dogbytemarketing.com"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://www.dogbytemarketing.com/contact/"
+msgstr ""
+
+#: faq-schema-shortcode.php:355
+msgid "Makes the FAQ function like an accordion"
+msgstr ""
+
+#: faq-schema-shortcode.php:415
+msgid ""
+"Note: It would be more beneficial to add the CSS to your theme's stylesheet."
+msgstr ""
+
+#: faq-schema-shortcode.php:176 faq-schema-shortcode.php:321
+#: faq-schema-shortcode.php:325
+msgid "Q:"
+msgstr ""
+
+#: faq-schema-shortcode.php:240
+msgid "Question Label"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Quickly add FAQ sections compatible with structured data to your site using "
+"simple shortcodes, improving your SEO."
+msgstr ""
+
+#: faq-schema-shortcode.php:232
+msgid "Shortcode Alias"
+msgstr ""
+
+#: faq-schema-shortcode.php:308
+msgid "The answer"
+msgstr ""
+
+#: faq-schema-shortcode.php:385 faq-schema-shortcode.php:400
+msgid "The background color of the accordion in hex."
+msgstr ""
+
+#: faq-schema-shortcode.php:340
+msgid "The label for the answer."
+msgstr ""
+
+#: faq-schema-shortcode.php:325
+msgid "The label for the question."
+msgstr ""
+
+#: faq-schema-shortcode.php:308
+msgid "The question"
+msgstr ""
+
+#: faq-schema-shortcode.php:370
+msgid "The text color of the accordion in hex."
+msgstr ""
+
+#: faq-schema-shortcode.php:305
+msgid ""
+"WordPress standards requires a prefix or suffix for shortcodes, but this can "
+"be difficult to remember. Check this box to make the shortcode available with"
+msgstr ""

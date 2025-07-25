@@ -4,7 +4,7 @@ Donate link:
 Tags: faq, structured data, schema, shortcode, seo
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -28,9 +28,11 @@ Want to help? Submit a PR on [Github](https://github.com/DogByteMarketing/faq-sc
 
 == Features ==
 
-* Shortcode alias for when you do not have any other shortcodes using [faqs] and [faq] then you can enable this feature in the settings.
+* Shortcode alias for when you do not have any other shortcodes using `[faqs]` and `[faq]` then you can enable this feature in the settings.
+* Customizable Question and Answer labels
 * Accordion option to let users toggle FAQs open and closed
 * Accordion background color, background hover color, and text color options
+* Add additional CSS
 
 
 == Installation ==
@@ -90,7 +92,13 @@ You would simply replace the " with '
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.1.0 =
+* Added: Setting to customize the question label
+* Added: Setting to customize the answer label
+* Added: Setting to add additional CSS
+* Added: Translation support
+
+= 1.0.2 =
 * Updated: FAQs to allow a, em, strong, ol, ul, li
 
 = 1.0.1 =

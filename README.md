@@ -15,7 +15,11 @@ FAQ Schema Shortcode is a WordPress plugin that allows you to easily add FAQ sec
 
 ### Features
 
-- Shortcode alias: Enable `[faqs]` and `[faq]` shortcodes in settings if no conflicting shortcodes exist.
+* Shortcode alias for when you do not have any other shortcodes using `[faqs]` and `[faq]` then you can enable this feature in the settings.
+* Customizable Question and Answer labels
+* Accordion option to let users toggle FAQs open and closed
+* Accordion background color, background hover color, and text color options
+* Add additional CSS
 
 ### Roadmap
 
@@ -74,6 +78,13 @@ You would simply replace the " with '
 ![Settings](.wordpress-org/screenshot-2.jpg)
 
 ## Changelog
+
+### 1.1.0
+
+- Added: Setting to customize the question label
+- Added: Setting to customize the answer label
+- Added: Setting to add additional CSS
+- Added: Translation support
 
 ### 1.0.2
 
