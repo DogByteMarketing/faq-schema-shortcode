@@ -4,7 +4,7 @@ Donate link:
 Tags: faq, structured data, schema, shortcode, seo
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -91,6 +91,9 @@ You would simply replace the " with '
 
 
 == Changelog ==
+
+= 1.1.1 =
+* Bugfix: FAQ showing at top of content
 
 = 1.1.0 =
 * Added: Setting to customize the question label

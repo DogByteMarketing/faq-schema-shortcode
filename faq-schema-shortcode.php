@@ -5,7 +5,7 @@
  * Plugin URI: https://www.dogbytemarketing.com/contact/
  * Description: Quickly add FAQ sections compatible with structured data to your site using simple shortcodes, improving your SEO.
  * Author: Dog Byte Marketing
- * Version: 1.1.0
+ * Version: 1.1.1
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Author URI: https://www.dogbytemarketing.com
@@ -176,6 +176,8 @@ class FAQ_Schema_Shortcode
     $question_label = isset($this->settings['question_label']) ? sanitize_text_field($this->settings['question_label']) : __('Q:', 'faq-schema-shortcode');
     $answer_label   = isset($this->settings['answer_label']) ? sanitize_text_field($this->settings['answer_label']) : __('A:', 'faq-schema-shortcode');
 
+    ob_start();
+
     // Return HTML output for each FAQ item
     if ($accordion) {
       ?>
@@ -197,6 +199,8 @@ class FAQ_Schema_Shortcode
       </div>
       <?php
     }
+
+    return ob_get_clean();
   }
 
 	/**
