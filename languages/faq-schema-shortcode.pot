@@ -1,138 +1,192 @@
-#, fuzzy
+# Copyright (C) 2025 Dog Byte Marketing
+# This file is distributed under the GPL3.
 msgid ""
 msgstr ""
-"Project-Id-Version: FAQ Schema Shortcode\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-25 17:18+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Project-Id-Version: FAQ Schema Shortcode 1.2.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/faq-schema-shortcode\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: \n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.7.2; wp-6.8\n"
-"X-Domain: faq-schema-shortcode"
+"POT-Creation-Date: 2025-09-29T09:59:11+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: faq-schema-shortcode\n"
 
-#: faq-schema-shortcode.php:177 faq-schema-shortcode.php:336
-#: faq-schema-shortcode.php:340
-msgid "A:"
-msgstr ""
-
-#: faq-schema-shortcode.php:256
-msgid "Accordion"
-msgstr ""
-
-#: faq-schema-shortcode.php:272
-msgid "Accordion Background Color"
-msgstr ""
-
-#: faq-schema-shortcode.php:280
-msgid "Accordion Background Hover Color"
-msgstr ""
-
-#: faq-schema-shortcode.php:264
-msgid "Accordion Text Color"
-msgstr ""
-
-#: faq-schema-shortcode.php:288
-msgid "Additional CSS"
-msgstr ""
-
-#: faq-schema-shortcode.php:248
-msgid "Answer Label"
-msgstr ""
-
-#: faq-schema-shortcode.php:415
-msgid "Any additional CSS you want to add."
-msgstr ""
-
-#. Author of the plugin
-msgid "Dog Byte Marketing"
-msgstr ""
-
-#: faq-schema-shortcode.php:325 faq-schema-shortcode.php:340
-#: faq-schema-shortcode.php:370 faq-schema-shortcode.php:385
-#: faq-schema-shortcode.php:400
-msgid "EX"
-msgstr ""
-
-#. Name of the plugin
+#. Plugin Name of the plugin
+#: faq-schema-shortcode.php
 msgid "FAQ Schema Shortcode"
 msgstr ""
 
-#: faq-schema-shortcode.php:428
-msgid "FAQ Schema Shortcode Settings"
-msgstr ""
-
-#: faq-schema-shortcode.php:208
-msgid "FAQ Shortcode"
-msgstr ""
-
-#. Author URI of the plugin
-msgid "https://www.dogbytemarketing.com"
-msgstr ""
-
-#. URI of the plugin
+#. Plugin URI of the plugin
+#: faq-schema-shortcode.php
 msgid "https://www.dogbytemarketing.com/contact/"
 msgstr ""
 
-#: faq-schema-shortcode.php:355
-msgid "Makes the FAQ function like an accordion"
+#. Description of the plugin
+#: faq-schema-shortcode.php
+msgid "Quickly add FAQ sections compatible with structured data to your site using simple shortcodes, improving your SEO."
 msgstr ""
 
-#: faq-schema-shortcode.php:415
-msgid ""
-"Note: It would be more beneficial to add the CSS to your theme's stylesheet."
+#. Author of the plugin
+#: faq-schema-shortcode.php
+msgid "Dog Byte Marketing"
 msgstr ""
 
-#: faq-schema-shortcode.php:176 faq-schema-shortcode.php:321
-#: faq-schema-shortcode.php:325
+#. Author URI of the plugin
+#: faq-schema-shortcode.php
+msgid "https://www.dogbytemarketing.com"
+msgstr ""
+
+#: faq-schema-shortcode.php:153
+msgid "FAQs"
+msgstr ""
+
+#: faq-schema-shortcode.php:187
+#: js/admin.js:22
+msgid "Question"
+msgstr ""
+
+#: faq-schema-shortcode.php:195
+msgid "Add FAQ"
+msgstr ""
+
+#: faq-schema-shortcode.php:333
+#: faq-schema-shortcode.php:505
+#: faq-schema-shortcode.php:509
+#: faq-schema-shortcode.php:826
 msgid "Q:"
 msgstr ""
 
-#: faq-schema-shortcode.php:240
-msgid "Question Label"
+#: faq-schema-shortcode.php:334
+#: faq-schema-shortcode.php:520
+#: faq-schema-shortcode.php:524
+#: faq-schema-shortcode.php:827
+msgid "A:"
 msgstr ""
 
-#. Description of the plugin
-msgid ""
-"Quickly add FAQ sections compatible with structured data to your site using "
-"simple shortcodes, improving your SEO."
+#: faq-schema-shortcode.php:369
+msgid "FAQ Shortcode"
 msgstr ""
 
-#: faq-schema-shortcode.php:232
+#: faq-schema-shortcode.php:393
 msgid "Shortcode Alias"
 msgstr ""
 
-#: faq-schema-shortcode.php:308
-msgid "The answer"
+#: faq-schema-shortcode.php:401
+msgid "Content FAQs"
 msgstr ""
 
-#: faq-schema-shortcode.php:385 faq-schema-shortcode.php:400
-msgid "The background color of the accordion in hex."
+#: faq-schema-shortcode.php:409
+msgid "Question Label"
 msgstr ""
 
-#: faq-schema-shortcode.php:340
-msgid "The label for the answer."
+#: faq-schema-shortcode.php:417
+msgid "Answer Label"
 msgstr ""
 
-#: faq-schema-shortcode.php:325
-msgid "The label for the question."
+#: faq-schema-shortcode.php:425
+msgid "Accordion"
 msgstr ""
 
-#: faq-schema-shortcode.php:308
+#: faq-schema-shortcode.php:433
+msgid "Accordion Text Color"
+msgstr ""
+
+#: faq-schema-shortcode.php:441
+msgid "Accordion Background Color"
+msgstr ""
+
+#: faq-schema-shortcode.php:449
+msgid "Accordion Background Hover Color"
+msgstr ""
+
+#: faq-schema-shortcode.php:457
+msgid "Additional CSS"
+msgstr ""
+
+#: faq-schema-shortcode.php:474
+msgid "WordPress standards requires a prefix or suffix for shortcodes, but this can be difficult to remember. Check this box to make the shortcode available with"
+msgstr ""
+
+#: faq-schema-shortcode.php:477
 msgid "The question"
 msgstr ""
 
-#: faq-schema-shortcode.php:370
+#: faq-schema-shortcode.php:477
+msgid "The answer"
+msgstr ""
+
+#: faq-schema-shortcode.php:494
+msgid "This adds a meta box to all post types to allow you to add FAQs easier via input fields."
+msgstr ""
+
+#: faq-schema-shortcode.php:509
+msgid "The label for the question."
+msgstr ""
+
+#: faq-schema-shortcode.php:509
+#: faq-schema-shortcode.php:524
+#: faq-schema-shortcode.php:554
+#: faq-schema-shortcode.php:569
+#: faq-schema-shortcode.php:584
+msgid "EX"
+msgstr ""
+
+#: faq-schema-shortcode.php:524
+msgid "The label for the answer."
+msgstr ""
+
+#: faq-schema-shortcode.php:539
+msgid "Makes the FAQ function like an accordion"
+msgstr ""
+
+#: faq-schema-shortcode.php:554
 msgid "The text color of the accordion in hex."
 msgstr ""
 
-#: faq-schema-shortcode.php:305
-msgid ""
-"WordPress standards requires a prefix or suffix for shortcodes, but this can "
-"be difficult to remember. Check this box to make the shortcode available with"
+#: faq-schema-shortcode.php:569
+#: faq-schema-shortcode.php:584
+msgid "The background color of the accordion in hex."
+msgstr ""
+
+#: faq-schema-shortcode.php:599
+msgid "Any additional CSS you want to add."
+msgstr ""
+
+#: faq-schema-shortcode.php:599
+msgid "Note: It would be more beneficial to add the CSS to your theme's stylesheet."
+msgstr ""
+
+#: faq-schema-shortcode.php:612
+msgid "FAQ Schema Shortcode Settings"
+msgstr ""
+
+#: faq-schema-shortcode.php:761
+msgid "Success"
+msgstr ""
+
+#: faq-schema-shortcode.php:778
+msgid "Error"
+msgstr ""
+
+#: faq-schema-shortcode.php:795
+msgid "FAQ Schema Shortcode has been updated to allow easier management of FAQs. The Content FAQs feature gives all post types an editor in the backend where you can add FAQs using HTML."
+msgstr ""
+
+#: faq-schema-shortcode.php:796
+msgid "Enable New Content FAQs Feature"
+msgstr ""
+
+#: faq-schema-shortcode.php:797
+msgid "View Changelog"
+msgstr ""
+
+#: js/admin.js:64
+msgid "Are you sure you want to remove this question?"
+msgstr ""
+
+#: js/admin.js:87
+msgid "New FAQ"
 msgstr ""

@@ -1,0 +1,15 @@
+# Update Checklist
+[ ] Update Readme
+[ ] Update Screenshots
+[ ] Plugin Scan
+
+# General
+[ ] Update to new architecture
+[ ] Add SWAL
+[ ] Make it so FAQs could be broken down by title of the FAQ and have it's own shortcode dynamically.
+[ ] Add CTA for emailing support next to add new FAQs.
+
+# 1.2.0
+[X] Add Content FAQs to give all post types an editor in the backend where you can add FAQs using HTML.
+[X] Add handling for updates
+[X] Update translations

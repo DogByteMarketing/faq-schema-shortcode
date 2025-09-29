@@ -4,7 +4,7 @@ Donate link:
 Tags: faq, structured data, schema, shortcode, seo
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -28,6 +28,7 @@ Want to help? Submit a PR on [Github](https://github.com/DogByteMarketing/faq-sc
 
 == Features ==
 
+* [NEW] Content FAQs section within backend editor to add FAQs using HTML across all post types. (posts, pages, products, ect)
 * Shortcode alias for when you do not have any other shortcodes using `[faqs]` and `[faq]` then you can enable this feature in the settings.
 * Customizable Question and Answer labels
 * Accordion option to let users toggle FAQs open and closed
@@ -91,6 +92,11 @@ You would simply replace the " with '
 
 
 == Changelog ==
+
+= 1.2.0 =
+* Added: Content FAQs to give all post types an editor in the backend where you can add FAQs using HTML.
+* Added: Handling for updates
+* Updated: Translations
 
 = 1.1.1 =
 * Bugfix: FAQ showing at top of content
