@@ -22,10 +22,6 @@ FAQ Schema Shortcode is a WordPress plugin that allows you to easily add FAQ sec
 * Accordion background color, background hover color, and text color options
 * Add additional CSS
 
-### Roadmap
-
-- Add accordion functionality for FAQ sections.
-
 ## Installation
 
 1. Backup your WordPress site.
