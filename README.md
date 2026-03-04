@@ -15,7 +15,7 @@ FAQ Schema Shortcode is a WordPress plugin that allows you to easily add FAQ sec
 
 ### Features
 
-* [NEW] Content FAQs section within backend editor to add FAQs using HTML across all post types. (posts, pages, products, ect)
+* [NEW] Content FAQs section within backend editor to add FAQs using HTML across all post types and also article categories and product categories. (posts, pages, products, product_cat, ect)
 * Shortcode alias for when you do not have any other shortcodes using `[faqs]` and `[faq]` then you can enable this feature in the settings.
 * Customizable Question and Answer labels
 * Accordion option to let users toggle FAQs open and closed

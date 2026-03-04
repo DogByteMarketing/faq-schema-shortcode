@@ -42,3 +42,7 @@
 #faq_schema_meta_box .faq-schema-actions .trash:hover {
   color: #D63638;
 }
+
+#faq_schema_meta_box.tax .hndle {
+  margin: 15px;
+}
