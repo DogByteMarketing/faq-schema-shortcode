@@ -754,13 +754,13 @@ class FAQ_Schema_Shortcode
 		<form action='options.php' method='post'>
 			<h2><?php esc_attr_e('FAQ Schema Shortcode Settings', 'faq-schema-shortcode'); ?></h2>
 
+			<p style="background-color: #00A32A; text-align: center; padding: 20px; color: #fff; width: 95%;">
+				If you need assistance with your Search Engine Optimization efforts, we at <a href="https://www.dogbytemarketing.com" style="text-decoration: none; color: #fff; font-weight: 700;" target="_blank">Dog Byte Marketing</a> are here to help! We offer a wide array of services.<br />Feel free to give us a call at <a href="tel:4237248922" style="text-decoration: none; color: #fff; font-weight: 700;" target="_blank">(423) 724 - 8922</a>.<br />
+				We're USA based in Tennessee.</p>
 			<?php
 			settings_fields('faq_schema_shortcode_dogbytemarketing');
 			do_settings_sections('faq_schema_shortcode_dogbytemarketing');
 			?>
-			<p style="background-color: #00A32A; text-align: center; padding: 20px; color: #fff; width: 62%;">
-				If you need assistance with your Search Engine Optimization efforts, we at <a href="https://www.dogbytemarketing.com" style="text-decoration: none; color: #fff; font-weight: 700;" target="_blank">Dog Byte Marketing</a> are here to help! We offer a wide array of services.<br />Feel free to give us a call at <a href="tel:4237248922" style="text-decoration: none; color: #fff; font-weight: 700;" target="_blank">(423) 724 - 8922</a>.<br />
-				We're USA based in Tennessee.</p>
 			<?php
 			submit_button();
 			?>
@@ -854,8 +854,10 @@ class FAQ_Schema_Shortcode
   public static function activation() {
     $settings = get_option('faq_schema_shortcode_dogbytemarketing_settings');
 
-    if (!$settings) {
-      add_option('faq_schema_shortcode_dogbytemarketing_settings');
+    if (!$settings || !is_array($settings)) {
+      $defaults = array('content_faqs' => true);
+      add_option('faq_schema_shortcode_dogbytemarketing_settings', $defaults);
+      update_option('faq_schema_shortcode_notice_dismissed_dogbytemarketing', true);
     }
   }
   
@@ -935,8 +937,8 @@ class FAQ_Schema_Shortcode
   public function notice_120() {
     ?>
     <div class="notice notice-success is-dismissible faq-schema-shortcode" style="padding-bottom: 10px;">
-      <p><?php echo esc_html__('FAQ Schema Shortcode has been updated to allow easier management of FAQs. The Content FAQs feature gives all post types an editor in the backend where you can add FAQs using HTML.', 'faq-schema-shortcode'); ?></p>
-      <a href="options-general.php?page=faq-schema-shortcode"><?php echo esc_html__('Enable New Content FAQs Feature', 'faq-schema-shortcode'); ?></a> | 
+      <p><?php echo esc_html__('FAQ Schema Shortcode has been updated to allow easier management of FAQs. The Content FAQs feature is now enabled by default and gives all post types along with article categories and product categories taxonomies an editor in the backend where you can add FAQs using HTML.', 'faq-schema-shortcode'); ?></p>
+      <a href="options-general.php?page=faq-schema-shortcode"><?php echo esc_html__('Disable in Settings', 'faq-schema-shortcode'); ?></a> |
       <a href="https://wordpress.org/plugins/faq-schema-shortcode/#developers" target="_blank"><?php echo esc_html__('View Changelog', 'faq-schema-shortcode'); ?></a>
     </div>
     <?php
@@ -948,6 +950,14 @@ class FAQ_Schema_Shortcode
    * @return void
    */
   private function update_to_120() {
+    $settings = get_option('faq_schema_shortcode_dogbytemarketing_settings');
+    if (!is_array($settings)) {
+      $settings = array();
+    }
+    if (empty($settings['content_faqs'])) {
+      $settings['content_faqs'] = true;
+      update_option('faq_schema_shortcode_dogbytemarketing_settings', $settings);
+    }
     update_option('faq_schema_shortcode_notice_dismissed_dogbytemarketing', false);
   }
   
