@@ -15,15 +15,12 @@ FAQ Schema Shortcode is a WordPress plugin that allows you to easily add FAQ sec
 
 ### Features
 
+* [NEW] Content FAQs section within backend editor to add FAQs using HTML across all post types and also article categories and product categories. (posts, pages, products, product_cat, ect)
 * Shortcode alias for when you do not have any other shortcodes using `[faqs]` and `[faq]` then you can enable this feature in the settings.
 * Customizable Question and Answer labels
 * Accordion option to let users toggle FAQs open and closed
 * Accordion background color, background hover color, and text color options
 * Add additional CSS
-
-### Roadmap
-
-- Add accordion functionality for FAQ sections.
 
 ## Installation
 
@@ -79,29 +76,35 @@ You would simply replace the " with '
 
 ## Changelog
 
+### 1.2.0
+
+* Added: Content FAQs to give all post types an editor in the backend where you can add FAQs using HTML.
+* Added: Handling for updates
+* Updated: Translations
+
 ### 1.1.1
 
-- Bugfix: FAQ showing at top of content
+* Bugfix: FAQ showing at top of content
 
 ### 1.1.0
 
-- Added: Setting to customize the question label
-- Added: Setting to customize the answer label
-- Added: Setting to add additional CSS
-- Added: Translation support
+* Added: Setting to customize the question label
+* Added: Setting to customize the answer label
+* Added: Setting to add additional CSS
+* Added: Translation support
 
 ### 1.0.2
 
-- Updated: FAQs to allow a, em, strong, ol, ul, li
+* Updated: FAQs to allow a, em, strong, ol, ul, li
 
 ### 1.0.1
 
-- Added: Accordion option
-- Added: Accordion text color option
-- Added: Accordion background color option
-- Added: Accordion background hover color option
-- Bugfix: Extra line breaks
+* Added: Accordion option
+* Added: Accordion text color option
+* Added: Accordion background color option
+* Added: Accordion background hover color option
+* Bugfix: Extra line breaks
 
 ### 1.0.0
 
-- Initial release.
+* Initial release.
