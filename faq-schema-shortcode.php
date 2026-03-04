@@ -211,7 +211,7 @@ class FAQ_Schema_Shortcode
     </div>
 
     <button type="button" class="add-faq button"><?php esc_html_e('Add FAQ', 'faq-schema-shortcode'); ?></button>
-    <p>Add <?php echo $shortcode_alias ? '[faqs]' : 'faqs_dbm'; ?> shortcode where you would like to display the FAQs.</p>
+    <p>Add <?php echo !empty($shortcode_alias) ? '[faqs]' : '[faqs_dbm]'; ?> shortcode where you would like to display the FAQs.</p>
     <?php
   }
   
@@ -334,7 +334,7 @@ class FAQ_Schema_Shortcode
     </div>
 
     <button type="button" class="add-faq button"><?php esc_html_e('Add FAQ', 'faq-schema-shortcode'); ?></button>
-    <p>Add <?php echo $shortcode_alias ? '[faqs]' : 'faqs_dbm'; ?> shortcode where you would like to display the FAQs (e.g. in the term archive template).</p>
+    <p>Add <?php echo !empty($shortcode_alias) ? '[faqs]' : '[faqs_dbm]'; ?> shortcode where you would like to display the FAQs (e.g. in the term archive template).</p>
       </div>
     </div>
     <?php
