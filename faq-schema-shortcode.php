@@ -16,6 +16,8 @@
 
 namespace DogByteMarketing;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 register_activation_hook(__FILE__, array(__NAMESPACE__ . '\FAQ_Schema_Shortcode', 'activation'));
 
 class FAQ_Schema_Shortcode
@@ -1269,14 +1271,14 @@ class FAQ_Schema_Shortcode
     $input = array();
 
     if (isset($_POST['faq_schema_shortcode_dogbytemarketing_settings'])) {
-      $posted = wp_unslash($_POST['faq_schema_shortcode_dogbytemarketing_settings']);
+      $posted = map_deep(wp_unslash($_POST['faq_schema_shortcode_dogbytemarketing_settings']), 'sanitize_text_field');
 
       if (is_array($posted)) {
         $input = $posted;
       }
     }
 
-    // update_option runs the registered sanitize callback. Do not sanitize before that.
+    // update_option still runs sanitize(), which turns checkbox values into booleans.
     update_option('faq_schema_shortcode_dogbytemarketing_settings', $input);
     $this->settings = get_option('faq_schema_shortcode_dogbytemarketing_settings', array());
 
