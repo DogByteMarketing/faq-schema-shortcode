@@ -2,25 +2,75 @@
 
 ## Description
 
-FAQ Schema Shortcode is a WordPress plugin that allows you to easily add FAQ sections to your site using simple shortcodes. It automatically generates structured data (JSON-LD schema) for each FAQ, helping search engines better understand your content and improving your site's SEO with rich results. By using the `[faqs_dbm]` and `[faq_dbm]` shortcodes, you can quickly create FAQs that are both user-friendly and SEO-friendly, enhancing your site's visibility in search engines.
+FAQ Schema Shortcode is a WordPress plugin that allows you to easily add FAQ sections to your site using simple shortcodes. It automatically generates structured data (JSON-LD schema) for each FAQ, helping search engines better understand your content and improving your site's SEO with rich results. Use the `_dbm` shortcodes below unless you enable Shortcode Alias in the plugin settings. The shorter tags, such as `[faqs]`, `[question]`, and `[answer]`, only work after that option is turned on.
 
 ### Example Usage
 
+Question and answer blocks:
+
 ```shortcode
 [faqs_dbm]
-[faq_dbm q="What color is the sky?" a="Blue"]
+[question_dbm]
+What color is the sky?
+[/question_dbm]
+[answer_dbm]
+Blue
+[/answer_dbm]
+[/faqs_dbm]
+```
+
+The original attribute shortcode still works:
+
+```shortcode
+[faqs_dbm]
 [faq_dbm q="What color is grass?" a="Green"]
 [/faqs_dbm]
+```
+
+After Shortcode Alias is enabled, drop `_dbm` from every tag:
+
+```shortcode
+[faqs]
+[question]
+What color is the sky?
+[/question]
+[answer]
+Blue
+[/answer]
+[/faqs]
 ```
 
 ### Features
 
 * [NEW] Content FAQs section within backend editor to add FAQs using HTML across all post types. (posts, pages, products, ect)
-* Shortcode alias for when you do not have any other shortcodes using `[faqs]` and `[faq]` then you can enable this feature in the settings.
+* [NEW] Question and answer shortcodes for longer FAQ text. Use `[question_dbm]` and `[answer_dbm]` inside `[faqs_dbm]` unless Shortcode Alias is enabled.
+* Shortcode alias for when you do not have any other shortcodes using `[faqs]`, `[faq]`, `[question]`, and `[answer]`. Enable this in the settings before using tags without `_dbm`.
 * Customizable Question and Answer labels
 * Accordion option to let users toggle FAQs open and closed
 * Accordion background color, background hover color, and text color options
 * Add additional CSS
+
+## GDPR
+
+We are not lawyers and always recommend doing your own compliance research into third party plugins, libraries, ect, as we've seen other plugins not be in compliance with these regulations.
+
+This plugin does not track visitors, set its own cookies, or send form submissions to an outside service.
+
+### General
+
+* Storing plugin settings
+* Remembering that the admin notice was dismissed
+
+### WordPress plugin (stored on your server)
+
+* FAQ question and answer text saved as post meta and printed on the page, including in the public JSON-LD schema
+* Plugin settings such as the shortcode alias, content FAQs, labels, accordion options, colors, and additional CSS
+* A site option recording that the admin notice was dismissed
+* The installed plugin version
+
+### External links
+
+* The plugin settings may contain links to external websites for support, recommendations, and additional resources. Visiting these websites is optional and may be subject to their own privacy policies, cookies, and tracking practices.
 
 ## Installation
 
@@ -31,14 +81,31 @@ FAQ Schema Shortcode is a WordPress plugin that allows you to easily add FAQ sec
 ## Frequently Asked Questions
 
 ### What is the shortcode for displaying FAQs?
-Use `[faqs_dbm]` as the container shortcode and `[faq_dbm q="Your question?" a="Your answer."]` for each individual FAQ item. Wrap the individual items inside the container like this:
+Use `[faqs_dbm]` as the container. Each FAQ can be a question block followed by an answer block:
 
-[faqs_dbm]  
-[faq_dbm q="What is this plugin for?" a="It helps you display FAQs with JSON-LD schema for SEO."]  
+```shortcode
+[faqs_dbm]
+[question_dbm]
+What is this plugin for?
+[/question_dbm]
+[answer_dbm]
+It helps you display FAQs with JSON-LD schema for SEO.
+[/answer_dbm]
 [/faqs_dbm]
+```
 
-### Can I use a simpler shortcode like [faqs] and [faq]?
-Yes, enable the "Shortcode Alias" option in the plugin settings. This will allow you to use `[faqs]` and `[faq]` instead of the default `[faqs_dbm]` and `[faq_dbm]`.
+You can also keep using one shortcode per FAQ:
+
+```shortcode
+[faqs_dbm]
+[faq_dbm q="What is this plugin for?" a="It helps you display FAQs with JSON-LD schema for SEO."]
+[/faqs_dbm]
+```
+
+`[question]`, `[answer]`, `[faqs]`, and `[faq]` do not work until Shortcode Alias is enabled. Until then, every tag needs the `_dbm` suffix.
+
+### Can I use a simpler shortcode like [faqs], [question], and [answer]?
+Yes. Go to **Settings > FAQ Shortcode** and enable **Shortcode Alias**. That removes the need for `_dbm`, so `[faqs_dbm]` becomes `[faqs]`, `[question_dbm]` becomes `[question]`, `[answer_dbm]` becomes `[answer]`, and `[faq_dbm]` becomes `[faq]`. Leave the option off if another plugin already uses those tag names.
 
 ### How do I enable accordion functionality?
 Go to **Settings > FAQ Shortcode**, and check the box labeled **Accordion**. This makes the FAQ entries collapsible and expandable.
@@ -64,10 +131,18 @@ Yes, but it's sanitized. Only the following tags are allowed in the answers:
 
 ### How do I include a link?
 
-You would simply replace the " with '
-[faqs]
-[faq q="How to include a link" a="<a href='#'>Just like this</a>"]
-[/faqs]
+You would simply replace the " with '. This example uses `_dbm` because that is required unless Shortcode Alias is enabled.
+
+```shortcode
+[faqs_dbm]
+[question_dbm]
+How to include a link
+[/question_dbm]
+[answer_dbm]
+<a href='#'>Just like this</a>
+[/answer_dbm]
+[/faqs_dbm]
+```
 
 ## Screenshots
 
