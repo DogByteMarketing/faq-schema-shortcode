@@ -8,7 +8,6 @@
 [ ] Make it so FAQs could be broken down by title of the FAQ and have it's own shortcode dynamically.
 
 # Done
-
 [X] Add notice that the plugin has been updated and to ask for a review 
 [X] Add Content FAQs to give all post types an editor in the backend where you can add FAQs using HTML.
 [X] Add handling for updates
