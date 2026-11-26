@@ -62,6 +62,7 @@ class FAQ_Schema_Shortcode
     if ($content_faqs) {
       add_action('add_meta_boxes', array($this, 'register_faq_meta_box'));
       add_action('save_post', array($this, 'save_faq_meta'));
+      add_action('init', array($this, 'register_term_faq_support'), 20);
     }
 
     add_shortcode('faqs_dbm', array($this, 'faq_container_shortcode'));
@@ -94,6 +95,8 @@ class FAQ_Schema_Shortcode
    */
   public function enqueue() {
     global $post;
+
+    $needs_assets = false;
     
     if (isset($post->post_content) &&
       (
@@ -107,6 +110,23 @@ class FAQ_Schema_Shortcode
         has_shortcode($post->post_content, 'answer')
       )
     ) {
+      $needs_assets = true;
+    }
+
+    if (!$needs_assets) {
+      $content_faqs = isset($this->settings['content_faqs']) ? sanitize_text_field($this->settings['content_faqs']) : '';
+      $term         = get_queried_object();
+
+      if ($content_faqs && $term instanceof \WP_Term && in_array($term->taxonomy, $this->get_faq_taxonomies(), true)) {
+        $term_faqs = get_term_meta($term->term_id, '_faqs_dogbytemarketing', true);
+
+        if (!empty($term_faqs) && is_array($term_faqs)) {
+          $needs_assets = true;
+        }
+      }
+    }
+
+    if ($needs_assets) {
       $accordion = isset($this->settings['accordion']) ? sanitize_text_field($this->settings['accordion']) : '';
 
       if ($accordion) {
@@ -132,7 +152,7 @@ class FAQ_Schema_Shortcode
    */
   public function admin_enqueue($hook) {
     $content_faqs = isset($this->settings['content_faqs']) ? sanitize_text_field($this->settings['content_faqs']) : '';
-    $is_editor    = ($hook === 'post.php' || $hook === 'post-new.php');
+    $is_editor    = ($hook === 'post.php' || $hook === 'post-new.php' || $hook === 'term.php' || $hook === 'edit-tags.php');
     $is_settings  = ($hook === 'settings_page_faq-schema-shortcode');
 
     wp_enqueue_style('faq-schema-shortcode-admin-dogbytemarketing', plugins_url('/assets/css/admin.css', __FILE__), array(), $this->version);
@@ -218,7 +238,7 @@ class FAQ_Schema_Shortcode
     </div>
 
     <button type="button" class="add-faq button"><?php esc_html_e('Add FAQ', 'faq-schema-shortcode'); ?></button>
-    <p>Add <?php echo $shortcode_alias ? '[faqs]' : 'faqs_dbm'; ?> shortcode where you would like to display the FAQs.</p>
+    <p>Add <?php echo !empty($shortcode_alias) ? '[faqs]' : '[faqs_dbm]'; ?> shortcode where you would like to display the FAQs.</p>
     <?php
   }
   
@@ -255,6 +275,136 @@ class FAQ_Schema_Shortcode
       delete_post_meta($post_id, '_faqs_dogbytemarketing');
     }
   }
+
+  /**
+   * Register term form hooks for FAQ support. Runs on init priority 20 so taxonomies
+   * like product_cat (WooCommerce) are registered first.
+   *
+   * @return void
+   */
+  public function register_term_faq_support() {
+    foreach ($this->get_faq_taxonomies() as $taxonomy) {
+      add_action($taxonomy . '_edit_form', array($this, 'render_faq_term_form'), 10, 2);
+      add_action('edited_' . $taxonomy, array($this, 'save_faq_term_meta'), 10, 2);
+      add_action('created_' . $taxonomy, array($this, 'save_faq_term_meta'), 10, 2);
+    }
+  }
+
+  /**
+   * Taxonomies that get the FAQ meta box on term edit (e.g. category, product_cat).
+   *
+   * @return array
+   */
+  private function get_faq_taxonomies() {
+    $taxonomies = array('category');
+
+    if (taxonomy_exists('product_cat')) {
+      $taxonomies[] = 'product_cat';
+    }
+
+    return $taxonomies;
+  }
+
+  /**
+   * Render FAQ box on term edit form.
+   *
+   * @param  \WP_Term $term
+   * @param  string   $taxonomy
+   * @return void
+   */
+  public function render_faq_term_form($term, $taxonomy) {
+    $faqs = get_term_meta($term->term_id, '_faqs_dogbytemarketing', true);
+
+    $this->render_faq_term_fields($faqs);
+  }
+
+  /**
+   * Render FAQ fields on term add form.
+   *
+   * @param  string $taxonomy
+   * @return void
+   */
+  public function render_faq_term_add_form($taxonomy) {
+    $this->render_faq_term_fields(array());
+  }
+
+  /**
+   * Output FAQ fields markup for term forms (shared by edit and add).
+   *
+   * @param  array $faqs
+   * @return void
+   */
+  private function render_faq_term_fields($faqs) {
+    $shortcode_alias = isset($this->settings['shortcode_alias']) ? sanitize_text_field($this->settings['shortcode_alias']) : '';
+
+    wp_nonce_field('save_faq_schema', 'faq_schema_nonce');
+    ?>
+    <div id="faq_schema_meta_box" class="postbox tax">
+      <div class="postbox-header"><h2 class="hndle"><?php echo esc_html(__('FAQs', 'faq-schema-shortcode')); ?></h2></div>
+      <div class="inside">
+    <div id="faq-schema-wrapper">
+      <?php if (!empty($faqs) && is_array($faqs)) : ?>
+        <?php foreach ($faqs as $i => $faq) : ?>
+          <div class="faq-schema-item">
+            <div class="faq-schema-question">
+              <span class="faq-schema-question-title"><?php echo esc_html($faq['question']); ?></span>
+              <div class="faq-schema-actions">
+                <a href="javascript:void(0);" class="trash">
+                  <span class="dashicons dashicons-trash"></span>
+                </a>
+                <span class="caret"><span class="dashicons dashicons-arrow-down-alt2"></span></span>
+              </div>
+            </div>
+            <div class="faq-schema-answer">
+              <p><input type="text" class="question" name="faq_schema[<?php echo esc_html($i); ?>][question]" value="<?php echo esc_attr($faq['question']); ?>" placeholder="<?php esc_attr_e('Question', 'faq-schema-shortcode'); ?>" style="width:100%;" /></p>
+              <p><?php wp_editor($faq['answer'], 'faq_schema_' . $i, array('textarea_name' => 'faq_schema[' . $i . '][answer]', 'media_buttons' => true, 'textarea_rows' => 4)); ?></p>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
+    </div>
+
+    <button type="button" class="add-faq button"><?php esc_html_e('Add FAQ', 'faq-schema-shortcode'); ?></button>
+    <p>Add <?php echo !empty($shortcode_alias) ? '[faqs]' : '[faqs_dbm]'; ?> shortcode where you would like to display the FAQs (e.g. in the term archive template).</p>
+      </div>
+    </div>
+    <?php
+  }
+
+  /**
+   * Save FAQ term meta when term is created or updated.
+   *
+   * @param  int $term_id
+   * @param  int $tt_id
+   * @return void
+   */
+  public function save_faq_term_meta($term_id, $tt_id = 0) {
+    if (!isset($_POST['faq_schema_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['faq_schema_nonce'])), 'save_faq_schema')) {
+      return;
+    }
+
+    if (!current_user_can('edit_term', $term_id)) {
+      return;
+    }
+
+    if (isset($_POST['faq_schema']) && is_array($_POST['faq_schema'])) {
+      $faq_schema = map_deep(wp_unslash($_POST['faq_schema']), 'wp_kses_post');
+      $faqs       = array();
+
+      foreach ($faq_schema as $faq) {
+        if (!empty($faq['question']) || !empty($faq['answer'])) {
+          $faqs[] = array(
+            'question' => $faq['question'],
+            'answer'   => $faq['answer']
+          );
+        }
+      }
+
+      update_term_meta($term_id, '_faqs_dogbytemarketing', $faqs);
+    } else {
+      delete_term_meta($term_id, '_faqs_dogbytemarketing');
+    }
+  }
   
   /**
    * Handle adding the FAQ container
@@ -264,14 +414,12 @@ class FAQ_Schema_Shortcode
    * @return void
    */
   public function faq_container_shortcode($atts, $content = null) {
-    global $post;
-
     $content_faqs = isset($this->settings['content_faqs']) ? sanitize_text_field($this->settings['content_faqs']) : '';
     $prepared     = $this->prepare_faq_content($content);
     $has_inner    = preg_match('/\[(faq|faq_dbm|question|question_dbm|answer|answer_dbm)\b/', $prepared);
 
-    if ($content_faqs && !$has_inner && is_object($post) && isset($post->ID)) {
-      $faqs = get_post_meta($post->ID, '_faqs_dogbytemarketing', true);
+    if ($content_faqs && !$has_inner) {
+      $faqs = $this->get_content_faqs_for_current_context();
 
       if (!empty($faqs) && is_array($faqs)) {
         return $this->custom_field_faqs($faqs);
@@ -1222,8 +1370,11 @@ class FAQ_Schema_Shortcode
   public static function activation() {
     $settings = get_option('faq_schema_shortcode_dogbytemarketing_settings');
 
-    if (!$settings) {
-      add_option('faq_schema_shortcode_dogbytemarketing_settings');
+    if (!$settings || !is_array($settings)) {
+      $defaults = array('content_faqs' => true);
+
+      add_option('faq_schema_shortcode_dogbytemarketing_settings', $defaults);
+      update_option('faq_schema_shortcode_notice_dismissed_dogbytemarketing', true);
     }
   }
   
@@ -1344,8 +1495,8 @@ class FAQ_Schema_Shortcode
   public function notice_120() {
     ?>
     <div class="notice notice-success is-dismissible faq-schema-shortcode" style="padding-bottom: 10px;">
-      <p><?php echo esc_html__('FAQ Schema Shortcode has been updated to allow easier management of FAQs. The Content FAQs feature gives all post types an editor in the backend where you can add FAQs using HTML.', 'faq-schema-shortcode'); ?></p>
-      <a href="options-general.php?page=faq-schema-shortcode"><?php echo esc_html__('Enable New Content FAQs Feature', 'faq-schema-shortcode'); ?></a> | 
+      <p><?php echo esc_html__('FAQ Schema Shortcode has been updated to allow easier management of FAQs. The Content FAQs feature is now enabled by default and gives all post types along with article categories and product categories taxonomies an editor in the backend where you can add FAQs using HTML.', 'faq-schema-shortcode'); ?></p>
+      <a href="options-general.php?page=faq-schema-shortcode"><?php echo esc_html__('Disable in Settings', 'faq-schema-shortcode'); ?></a> | 
       <a href="https://wordpress.org/plugins/faq-schema-shortcode/#developers" target="_blank"><?php echo esc_html__('View Changelog', 'faq-schema-shortcode'); ?></a>
     </div>
     <?php
@@ -1381,6 +1532,21 @@ class FAQ_Schema_Shortcode
    * @return void
    */
   private function update_to_120() {
+    $settings = get_option('faq_schema_shortcode_dogbytemarketing_settings');
+
+    if (!is_array($settings)) {
+      $settings = array();
+    }
+
+    if (empty($settings['content_faqs'])) {
+      $settings['content_faqs'] = true;
+
+      // The settings sanitizer only accepts the form value "on". Skip it so stored booleans stay intact.
+      remove_filter('sanitize_option_faq_schema_shortcode_dogbytemarketing_settings', array($this, 'sanitize'));
+      update_option('faq_schema_shortcode_dogbytemarketing_settings', $settings);
+      add_filter('sanitize_option_faq_schema_shortcode_dogbytemarketing_settings', array($this, 'sanitize'));
+    }
+
     update_option('faq_schema_shortcode_notice_dismissed_dogbytemarketing', false);
   }
 
@@ -1393,6 +1559,35 @@ class FAQ_Schema_Shortcode
     update_option('faq_schema_shortcode_notice_dismissed_dogbytemarketing', false);
   }
   
+  /**
+   * Get FAQs for current context: term archive (category/product_cat) or current post.
+   *
+   * @return array
+   */
+  private function get_content_faqs_for_current_context() {
+    $term = get_queried_object();
+
+    if ($term instanceof \WP_Term && in_array($term->taxonomy, $this->get_faq_taxonomies(), true)) {
+      $faqs = get_term_meta($term->term_id, '_faqs_dogbytemarketing', true);
+
+      if (!empty($faqs) && is_array($faqs)) {
+        return $faqs;
+      }
+    }
+
+    global $post;
+
+    if (!empty($post->ID)) {
+      $faqs = get_post_meta($post->ID, '_faqs_dogbytemarketing', true);
+
+      if (!empty($faqs) && is_array($faqs)) {
+        return $faqs;
+      }
+    }
+
+    return array();
+  }
+
   /**
    * Handle displaying FAQs from custom field.
    *

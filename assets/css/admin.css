@@ -51,6 +51,10 @@
   color: #D63638;
 }
 
+#faq_schema_meta_box.tax .hndle {
+  margin: 15px;
+}
+
 /* Other plugins print notices on every admin screen. Keep this plugin's notice and the Settings API confirmation. */
 body.settings_page_faq-schema-shortcode .notice:not(.faq-schema-shortcode):not(.settings-error),
 body.settings_page_faq-schema-shortcode .update-nag:not(.faq-schema-shortcode),

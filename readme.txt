@@ -50,7 +50,7 @@ Want to help? Submit a PR on [Github](https://github.com/DogByteMarketing/faq-sc
 
 == Features ==
 
-* [NEW] Content FAQs section within backend editor to add FAQs using HTML across all post types. (posts, pages, products, ect)
+* [NEW] Content FAQs section within backend editor to add FAQs using HTML across all post types and also article categories and product categories. (posts, pages, products, product_cat, ect)
 * [NEW] Question and answer shortcodes for longer FAQ text. Use `[question_dbm]` and `[answer_dbm]` inside `[faqs_dbm]` unless Shortcode Alias is enabled.
 * Shortcode alias for when you do not have any other shortcodes using `[faqs]`, `[faq]`, `[question]`, and `[answer]`. Enable this in the settings before using tags without `_dbm`.
 * Customizable Question and Answer labels
