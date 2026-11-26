@@ -1519,7 +1519,7 @@ class FAQ_Schema_Shortcode
           <?php esc_html_e('Introducing improved FAQ shortcodes', 'faq-schema-shortcode'); ?>
           <span class="faq-schema-notice__version"><?php echo esc_html('v' . $this->version); ?></span>
         </p>
-        <p class="faq-schema-notice__text"><?php esc_html_e('FAQ Schema Shortcode now features an improved shortcode structure. Your existing shortcodes will continue to work without any changes.', 'faq-schema-shortcode'); ?></p>
+        <p class="faq-schema-notice__text"><?php esc_html_e('FAQ Schema Shortcode now features an improved shortcode structure. Your existing shortcodes will continue to work without any changes.', 'faq-schema-shortcode'); ?><br /><?php esc_html_e('You can also use the new Content FAQs feature to add FAQs using HTML across all post types and also article categories and product categories.', 'faq-schema-shortcode'); ?></p>
         <a class="faq-schema-notice__button" href="<?php echo esc_url($settings_url); ?>"><?php esc_html_e('View New Shortcode Examples', 'faq-schema-shortcode'); ?></a>
       </div>
     </div>
