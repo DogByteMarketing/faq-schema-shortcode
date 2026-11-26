@@ -160,6 +160,10 @@ How to include a link
 
 == Changelog ==
 
+= 1.3.0 =
+* Added: Improved shortcode structure. Your existing shortcodes will continue to work without any changes.
+* Added: The new Content FAQs feature to add FAQs using HTML across all post types and also article categories and product categories.
+
 = 1.2.0 =
 * Added: Content FAQs to give all post types an editor in the backend where you can add FAQs using HTML.
 * Added: Handling for updates
